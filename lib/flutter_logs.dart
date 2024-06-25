@@ -138,6 +138,7 @@ class FlutterLogs {
         'initialDelaySecondsForPublishing': initialDelaySecondsForPublishing
       });
     }
+    return null;
   }
 
   static Future<String> setMetaInfo({
@@ -218,7 +219,7 @@ class FlutterLogs {
         'e': error.stackTrace.toString()
       });
       printDebugMessage(result, 2);
-    } else if (errorMessage != null && errorMessage.isNotEmpty) {
+    } else if (errorMessage.isNotEmpty) {
       final String result =
           await channel.invokeMethod('logThis', <String, dynamic>{
         'tag': tag,
@@ -307,7 +308,7 @@ class FlutterLogs {
     }
   }
 
-  static Future<void> exportLogs(
+  static Future<String> exportLogs(
       {ExportType exportType = ExportType.ALL,
       bool decryptBeforeExporting = false}) async {
     final String result =
@@ -316,6 +317,7 @@ class FlutterLogs {
       'decryptBeforeExporting': decryptBeforeExporting
     });
     printDebugMessage(result, 2);
+    return result;
   }
 
   static Future<void> printLogs(

@@ -22,7 +22,10 @@ class FlutterLogsPlugin : FlutterPlugin, ActivityAware {
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         binaryMessenger = flutterPluginBinding.binaryMessenger
-        setUpPluginMethods(flutterPluginBinding.applicationContext, flutterPluginBinding.binaryMessenger)
+        setUpPluginMethods(
+            flutterPluginBinding.applicationContext,
+            flutterPluginBinding.binaryMessenger
+        )
     }
 
     companion object {
@@ -38,7 +41,7 @@ class FlutterLogsPlugin : FlutterPlugin, ActivityAware {
 
         @JvmStatic
         private fun setUpPluginMethods(context: Context, messenger: BinaryMessenger) {
-          
+
             channel = MethodChannel(messenger, "flutter_logs")
 
             channel?.setMethodCallHandler { call, result ->
@@ -47,8 +50,10 @@ class FlutterLogsPlugin : FlutterPlugin, ActivityAware {
 
                         val logLevelsEnabled = getLogLevelsById("logLevelsEnabled", call)
                         val logTypesEnabled = getListOfStringById("logTypesEnabled", call)
-                        val logsRetentionPeriodInDays = getIntValueById("logsRetentionPeriodInDays", call)
-                        val zipsRetentionPeriodInDays = getIntValueById("zipsRetentionPeriodInDays", call)
+                        val logsRetentionPeriodInDays =
+                            getIntValueById("logsRetentionPeriodInDays", call)
+                        val zipsRetentionPeriodInDays =
+                            getIntValueById("zipsRetentionPeriodInDays", call)
                         val autoDeleteZipOnExport = getBoolValueById("autoDeleteZipOnExport", call)
                         val autoClearLogs = getBoolValueById("autoClearLogs", call)
                         val autoExportErrors = getBoolValueById("autoExportErrors", call)
@@ -70,33 +75,35 @@ class FlutterLogsPlugin : FlutterPlugin, ActivityAware {
                         val enabled = getBoolValueById("enabled", call)
 
                         LogsHelper.setUpLogger(
-                                context = context,
-                                logLevelsEnabled = logLevelsEnabled,
-                                logTypesEnabled = logTypesEnabled,
-                                logsRetentionPeriodInDays = logsRetentionPeriodInDays,
-                                zipsRetentionPeriodInDays = zipsRetentionPeriodInDays,
-                                autoDeleteZipOnExport = autoDeleteZipOnExport,
-                                autoClearLogs = autoClearLogs,
-                                autoExportErrors = autoExportErrors,
-                                encryptionEnabled = encryptionEnabled,
-                                encryptionKey = encryptionKey,
-                                directoryStructure = directoryStructure,
-                                logSystemCrashes = logSystemCrashes,
-                                isDebuggable = isDebuggable,
-                                debugFileOperations = debugFileOperations,
-                                attachTimeStamp = attachTimeStamp,
-                                attachNoOfFiles = attachNoOfFiles,
-                                timeStampFormat = timeStampFormat,
-                                logFileExtension = logFileExtension,
-                                zipFilesOnly = zipFilesOnly,
-                                savePath = savePath,
-                                zipFileName = zipFileName,
-                                exportPath = exportPath,
-                                singleLogFileSize = singleLogFileSize,
-                                enabled = enabled)
+                            context = context,
+                            logLevelsEnabled = logLevelsEnabled,
+                            logTypesEnabled = logTypesEnabled,
+                            logsRetentionPeriodInDays = logsRetentionPeriodInDays,
+                            zipsRetentionPeriodInDays = zipsRetentionPeriodInDays,
+                            autoDeleteZipOnExport = autoDeleteZipOnExport,
+                            autoClearLogs = autoClearLogs,
+                            autoExportErrors = autoExportErrors,
+                            encryptionEnabled = encryptionEnabled,
+                            encryptionKey = encryptionKey,
+                            directoryStructure = directoryStructure,
+                            logSystemCrashes = logSystemCrashes,
+                            isDebuggable = isDebuggable,
+                            debugFileOperations = debugFileOperations,
+                            attachTimeStamp = attachTimeStamp,
+                            attachNoOfFiles = attachNoOfFiles,
+                            timeStampFormat = timeStampFormat,
+                            logFileExtension = logFileExtension,
+                            zipFilesOnly = zipFilesOnly,
+                            savePath = savePath,
+                            zipFileName = zipFileName,
+                            exportPath = exportPath,
+                            singleLogFileSize = singleLogFileSize,
+                            enabled = enabled
+                        )
 
                         result.success("Logs Configuration added.")
                     }
+
                     "initMQTT" -> {
                         val topic = getStringValueById("topic", call)
                         val brokerUrl = getStringValueById("brokerUrl", call)
@@ -105,24 +112,29 @@ class FlutterLogsPlugin : FlutterPlugin, ActivityAware {
                         val port = getStringValueById("port", call)
                         val qos = getIntValueById("qos", call)
                         val retained = getBoolValueById("retained", call)
-                        val writeLogsToLocalStorage = getBoolValueById("writeLogsToLocalStorage", call)
+                        val writeLogsToLocalStorage =
+                            getBoolValueById("writeLogsToLocalStorage", call)
                         val debug = getBoolValueById("debug", call)
-                        val initialDelaySecondsForPublishing = getIntValueById("initialDelaySecondsForPublishing", call)
+                        val initialDelaySecondsForPublishing =
+                            getIntValueById("initialDelaySecondsForPublishing", call)
 
-                        LogsHelper.setMQTT(context,
-                                writeLogsToLocalStorage = writeLogsToLocalStorage,
-                                topic = topic,
-                                brokerUrl = brokerUrl,
-                                certificateInputStream = certificate,
-                                clientId = clientId,
-                                port = port,
-                                qos = qos,
-                                retained = retained,
-                                debug = debug,
-                                initialDelaySecondsForPublishing = initialDelaySecondsForPublishing)
+                        LogsHelper.setMQTT(
+                            context,
+                            writeLogsToLocalStorage = writeLogsToLocalStorage,
+                            topic = topic,
+                            brokerUrl = brokerUrl,
+                            certificateInputStream = certificate,
+                            clientId = clientId,
+                            port = port,
+                            qos = qos,
+                            retained = retained,
+                            debug = debug,
+                            initialDelaySecondsForPublishing = initialDelaySecondsForPublishing
+                        )
 
                         result.success("MQTT setup added.")
                     }
+
                     "setMetaInfo" -> {
                         val appId = getStringValueById("appId", call)
                         val appName = getStringValueById("appName", call)
@@ -148,31 +160,32 @@ class FlutterLogsPlugin : FlutterPlugin, ActivityAware {
                         val labels = getStringValueById("labels", call)
 
                         LogsHelper.setupForELKStack(
-                                appId = appId,
-                                appName = appName,
-                                appVersion = appVersion,
-                                deviceId = deviceId,
-                                environmentId = environmentId,
-                                environmentName = environmentName,
-                                organizationId = organizationId,
-                                organizationUnitId = organizationUnitId,
-                                language = language,
-                                userId = userId,
-                                userName = userName,
-                                userEmail = userEmail,
-                                deviceSerial = deviceSerial,
-                                deviceBrand = deviceBrand,
-                                deviceName = deviceName,
-                                deviceManufacturer = deviceManufacturer,
-                                deviceModel = deviceModel,
-                                deviceSdkInt = deviceSdkInt,
-                                deviceBatteryPercent = deviceBatteryPercent,
-                                latitude = latitude,
-                                longitude = longitude
+                            appId = appId,
+                            appName = appName,
+                            appVersion = appVersion,
+                            deviceId = deviceId,
+                            environmentId = environmentId,
+                            environmentName = environmentName,
+                            organizationId = organizationId,
+                            organizationUnitId = organizationUnitId,
+                            language = language,
+                            userId = userId,
+                            userName = userName,
+                            userEmail = userEmail,
+                            deviceSerial = deviceSerial,
+                            deviceBrand = deviceBrand,
+                            deviceName = deviceName,
+                            deviceManufacturer = deviceManufacturer,
+                            deviceModel = deviceModel,
+                            deviceSdkInt = deviceSdkInt,
+                            deviceBatteryPercent = deviceBatteryPercent,
+                            latitude = latitude,
+                            longitude = longitude
                         )
 
                         result.success("Logs MetaInfo added for ELK stack.")
                     }
+
                     "logThis" -> {
                         val tag = getStringValueById("tag", call)
                         val subTag = getStringValueById("subTag", call)
@@ -184,9 +197,11 @@ class FlutterLogsPlugin : FlutterPlugin, ActivityAware {
                             LogLevel.INFO -> {
                                 PLog.logThis(tag, subTag, logMessage, LogLevel.INFO)
                             }
+
                             LogLevel.WARNING -> {
                                 PLog.logThis(tag, subTag, logMessage, LogLevel.WARNING)
                             }
+
                             LogLevel.ERROR -> {
                                 if (exception.isNotEmpty()) {
                                     //PLog.logThis(tag, subTag, logMessage, Throwable(exception), LogLevel.ERROR)
@@ -195,6 +210,7 @@ class FlutterLogsPlugin : FlutterPlugin, ActivityAware {
                                     PLog.logThis(tag, subTag, logMessage, LogLevel.ERROR)
                                 }
                             }
+
                             LogLevel.SEVERE -> {
                                 if (exception.isNotEmpty()) {
                                     //PLog.logThis(tag, subTag, logMessage, Throwable(exception), LogLevel.SEVERE)
@@ -205,6 +221,7 @@ class FlutterLogsPlugin : FlutterPlugin, ActivityAware {
                             }
                         }
                     }
+
                     "logToFile" -> {
                         val logFileName = getStringValueById("logFileName", call)
                         val overwrite = getBoolValueById("overwrite", call)
@@ -217,113 +234,192 @@ class FlutterLogsPlugin : FlutterPlugin, ActivityAware {
                             LogsHelper.writeLogToFile(logFileName, logMessage, appendTimeStamp)
                         }
                     }
+
                     "exportLogs" -> {
                         val exportType = getStringValueById("exportType", call)
-                        val decryptBeforeExporting = getBoolValueById("decryptBeforeExporting", call)
+                        val decryptBeforeExporting =
+                            getBoolValueById("decryptBeforeExporting", call)
 
-                        PLog.exportLogsForType(getExportType(exportType), exportDecrypted = decryptBeforeExporting)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribeBy(
-                                        onNext = {
-                                            PLog.logThis(TAG, "exportPLogs", "PLogs Path: ${getParentPath(it)}", LogLevel.INFO)
+                        PLog.exportLogsForType(
+                            getExportType(exportType),
+                            exportDecrypted = decryptBeforeExporting
+                        )
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeBy(
+                                onNext = { it ->
+                                    val parentPath = getParentPath(it)
+                                    PLog.logThis(
+                                        TAG,
+                                        "exportPLogs",
+                                        "PLogs Path: $parentPath",
+                                        LogLevel.INFO
+                                    )
 
-                                            channel?.invokeMethod("logsExported", "${getParentPath(it)}")
-                                        },
-                                        onError = {
-                                            it.printStackTrace()
-                                            PLog.logThis(TAG, "exportPLogs", "PLog Error: " + it.message, LogLevel.ERROR)
-                                            channel?.invokeMethod("logsExported", it.message)
-                                        },
-                                        onComplete = { }
-                                )
+                                    val logMessage = if (channel != null) {
+                                        "ReturningLogs"
+                                    } else {
+                                        "FailedReturn"
+                                    }
+                                    PLog.logThis(
+                                        TAG,
+                                        logMessage,
+                                        "PLogs Path: $parentPath",
+                                        LogLevel.INFO
+                                    )
+
+                                    channel?.invokeMethod("logsExported", parentPath)
+                                    result.success(parentPath);
+                                },
+                                onError = {
+                                    it.printStackTrace()
+                                    PLog.logThis(
+                                        TAG,
+                                        "exportPLogs",
+                                        "PLog Error: " + it.message,
+                                        LogLevel.ERROR
+                                    )
+                                    channel?.invokeMethod("logsExported", it.message)
+                                },
+                                onComplete = {
+                                }
+                            )
                     }
+
                     "exportFileLogForName" -> {
                         val logFileName = getStringValueById("logFileName", call)
-                        val decryptBeforeExporting = getBoolValueById("decryptBeforeExporting", call)
+                        val decryptBeforeExporting =
+                            getBoolValueById("decryptBeforeExporting", call)
 
-                        PLog.exportDataLogsForName(logFileName, exportDecrypted = decryptBeforeExporting)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribeBy(
-                                        onNext = {
-                                            PLog.logThis(TAG, "exportFileLogForName", "DataLog Path: ${getParentPath(it)}", LogLevel.INFO)
+                        PLog.exportDataLogsForName(
+                            logFileName,
+                            exportDecrypted = decryptBeforeExporting
+                        )
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeBy(
+                                onNext = {
+                                    PLog.logThis(
+                                        TAG,
+                                        "exportFileLogForName",
+                                        "DataLog Path: ${getParentPath(it)}",
+                                        LogLevel.INFO
+                                    )
 
-                                            channel?.invokeMethod("logsExported", "${getParentPath(it)}")
-                                        },
-                                        onError = {
-                                            it.printStackTrace()
-                                            PLog.logThis(TAG, "exportFileLogForName", "DataLogger Error: " + it.message, LogLevel.ERROR)
-                                            channel?.invokeMethod("logsExported", it.message)
-                                        },
-                                        onComplete = { }
-                                )
+                                    channel?.invokeMethod("logsExported", "${getParentPath(it)}")
+                                },
+                                onError = {
+                                    it.printStackTrace()
+                                    PLog.logThis(
+                                        TAG,
+                                        "exportFileLogForName",
+                                        "DataLogger Error: " + it.message,
+                                        LogLevel.ERROR
+                                    )
+                                    channel?.invokeMethod("logsExported", it.message)
+                                },
+                                onComplete = { }
+                            )
                     }
+
                     "exportAllFileLogs" -> {
-                        val decryptBeforeExporting = getBoolValueById("decryptBeforeExporting", call)
+                        val decryptBeforeExporting =
+                            getBoolValueById("decryptBeforeExporting", call)
 
                         PLog.exportAllDataLogs(exportDecrypted = decryptBeforeExporting)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribeBy(
-                                        onNext = {
-                                            PLog.logThis(TAG, "exportAllFileLogs", "DataLog Path: ${getParentPath(it)}", LogLevel.INFO)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeBy(
+                                onNext = {
+                                    PLog.logThis(
+                                        TAG,
+                                        "exportAllFileLogs",
+                                        "DataLog Path: ${getParentPath(it)}",
+                                        LogLevel.INFO
+                                    )
 
-                                            channel?.invokeMethod("logsExported", "${getParentPath(it)}")
-                                        },
-                                        onError = {
-                                            it.printStackTrace()
-                                            PLog.logThis(TAG, "exportAllFileLogs", "DataLogger Error: " + it.message, LogLevel.ERROR)
-                                            channel?.invokeMethod("logsExported", it.message)
-                                        },
-                                        onComplete = { }
-                                )
+                                    channel?.invokeMethod("logsExported", "${getParentPath(it)}")
+                                },
+                                onError = {
+                                    it.printStackTrace()
+                                    PLog.logThis(
+                                        TAG,
+                                        "exportAllFileLogs",
+                                        "DataLogger Error: " + it.message,
+                                        LogLevel.ERROR
+                                    )
+                                    channel?.invokeMethod("logsExported", it.message)
+                                },
+                                onComplete = { }
+                            )
                     }
+
                     "printLogs" -> {
                         val exportType = getStringValueById("exportType", call)
-                        val decryptBeforeExporting = getBoolValueById("decryptBeforeExporting", call)
+                        val decryptBeforeExporting =
+                            getBoolValueById("decryptBeforeExporting", call)
 
-                        PLog.printLogsForType(getExportType(exportType), printDecrypted = decryptBeforeExporting)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribeBy(
-                                        onNext = {
-                                            Log.i("printLogs", it)
+                        PLog.printLogsForType(
+                            getExportType(exportType),
+                            printDecrypted = decryptBeforeExporting
+                        )
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeBy(
+                                onNext = {
+                                    Log.i("printLogs", it)
 
-                                            channel?.invokeMethod("logsPrinted", it)
-                                        },
-                                        onError = {
-                                            it.printStackTrace()
-                                            PLog.logThis(TAG, "printLogs", "PLog Error: " + it.message, LogLevel.ERROR)
-                                            channel?.invokeMethod("logsPrinted", it.message)
-                                        },
-                                        onComplete = { }
-                                )
+                                    channel?.invokeMethod("logsPrinted", it)
+                                },
+                                onError = {
+                                    it.printStackTrace()
+                                    PLog.logThis(
+                                        TAG,
+                                        "printLogs",
+                                        "PLog Error: " + it.message,
+                                        LogLevel.ERROR
+                                    )
+                                    channel?.invokeMethod("logsPrinted", it.message)
+                                },
+                                onComplete = { }
+                            )
                     }
+
                     "printFileLogForName" -> {
                         val logFileName = getStringValueById("logFileName", call)
-                        val decryptBeforeExporting = getBoolValueById("decryptBeforeExporting", call)
+                        val decryptBeforeExporting =
+                            getBoolValueById("decryptBeforeExporting", call)
 
-                        PLog.printDataLogsForName(logFileName, printDecrypted = decryptBeforeExporting)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribeBy(
-                                        onNext = {
-                                            Log.i("printFileLogForName", it)
+                        PLog.printDataLogsForName(
+                            logFileName,
+                            printDecrypted = decryptBeforeExporting
+                        )
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeBy(
+                                onNext = {
+                                    Log.i("printFileLogForName", it)
 
-                                            channel?.invokeMethod("logsPrinted", it)
-                                        },
-                                        onError = {
-                                            it.printStackTrace()
-                                            PLog.logThis(TAG, "printFileLogForName", "DataLogger Error: " + it.message, LogLevel.ERROR)
-                                            channel?.invokeMethod("logsPrinted", it.message)
-                                        },
-                                        onComplete = { }
-                                )
+                                    channel?.invokeMethod("logsPrinted", it)
+                                },
+                                onError = {
+                                    it.printStackTrace()
+                                    PLog.logThis(
+                                        TAG,
+                                        "printFileLogForName",
+                                        "DataLogger Error: " + it.message,
+                                        LogLevel.ERROR
+                                    )
+                                    channel?.invokeMethod("logsPrinted", it.message)
+                                },
+                                onComplete = { }
+                            )
                     }
+
                     "clearLogs" -> {
                         PLog.clearLogs()
                     }
+
                     else -> result.notImplemented()
                 }
             }
@@ -339,7 +435,7 @@ class FlutterLogsPlugin : FlutterPlugin, ActivityAware {
                 }
             })
         }
-        
+
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
